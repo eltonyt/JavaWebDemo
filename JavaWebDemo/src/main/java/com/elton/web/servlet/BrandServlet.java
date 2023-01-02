@@ -38,4 +38,12 @@ public class BrandServlet extends BaseServlet{
         brandService.updateBrand(brand);
         resp.getWriter().write("updated");
     }
+
+    public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader br = req.getReader();
+        String param = br.readLine();
+        int id = Integer.parseInt(param);
+        brandService.deleteById(id);
+        resp.getWriter().write("deleted");
+    }
 }

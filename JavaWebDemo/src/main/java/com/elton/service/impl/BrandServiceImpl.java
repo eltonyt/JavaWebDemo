@@ -37,4 +37,12 @@ public class BrandServiceImpl implements BrandService {
         sqlSession.commit();
         sqlSession.close();
     }
+
+    public void deleteById(int id) {
+        SqlSession sqlSession = factory.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        brandMapper.deleteById(id);
+        sqlSession.commit();
+        sqlSession.close();
+    }
 }

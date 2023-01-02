@@ -256,6 +256,35 @@
                 this.brandEdition = JSON.parse(JSON.stringify(row));
                 this.editDialogVisible = true;
             },
+            deleteById(row) {
+                this.brand.id = row.id;
+                this.$confirm("Are you sure you want to remove this record?", "Warning", {
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    type: "warning"
+                }).then(() => {
+                    axios({
+                        method: "delete",
+                        url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/delete",
+                        data: this.brand.id
+                    }).then(
+                        resp => {
+                            if (resp.data == "deleted") {
+                                this.selectAll();
+                                this.$message({
+                                    message:"Removed",
+                                    type:"success"
+                                });
+                            }
+                        }
+                    )
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'deletion cancelled'
+                    })
+                })
+            },
             handleCurrentChange(val) {
                 //console.log(`当前页: ${val}`);
                 // 重新设置当前页码
@@ -289,6 +318,7 @@
                     description: '',
                     status: ''
                 },
+                brandDeleteId: -1,
                 multipleSelection: [],
                 tableData: [{
                     brandName: '华为',
