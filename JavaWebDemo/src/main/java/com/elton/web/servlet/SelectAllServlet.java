@@ -23,7 +23,6 @@ public class SelectAllServlet extends HttpServlet {
         List<Brand> brands = brandService.selectAll();
         String jsonString = JSON.toJSONString(brands);
         resp.getWriter().write(jsonString);
-        super.doGet(req, resp);
     }
 
     @Override
