@@ -16,113 +16,67 @@
 </head>
 <body>
 <div id="app">
-
-    <!--查询表单-->
     <el-form :inline="true" :model="brand" class="demo-form-inline">
-
-        <el-form-item label="当前状态">
-            <el-select v-model="brand.status" placeholder="当前状态">
-                <el-option label="启用" value="1"></el-option>
-                <el-option label="禁用" value="0"></el-option>
+        <el-form-item label="Status">
+            <el-select v-model="brand.status" placeholder="Status">
+                <el-option label="Active" value="1"></el-option>
+                <el-option label="Disabled" value="0"></el-option>
             </el-select>
         </el-form-item>
 
-        <el-form-item label="企业名称">
-            <el-input v-model="brand.companyName" placeholder="企业名称"></el-input>
+        <el-form-item label="Company Name">
+            <el-input v-model="brand.companyName" placeholder="Company Name"></el-input>
         </el-form-item>
 
-        <el-form-item label="品牌名称">
-            <el-input v-model="brand.brandName" placeholder="品牌名称"></el-input>
+        <el-form-item label="Brand Name">
+            <el-input v-model="brand.brandName" placeholder="Brand Name"></el-input>
         </el-form-item>
-
-        <!--提交按钮绑定 onSubmit方法(onSubmit调用的就是selectAll)-->
         <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
+            <el-button type="primary" @click="onSubmit">Submit</el-button>
         </el-form-item>
     </el-form>
 
-    <!--按钮-->
     <el-row>
-
-        <!--绑定deleteByIds方法-->
-        <el-button type="danger" plain @click="deleteByIds">批量删除</el-button>
-        <!--绑定dialogVisible方法-->
-        <el-button type="primary" plain @click="dialogVisible = true">新增</el-button> <!--新增其实就是让一个窗口可视-->
-
+        <el-button type="danger" plain @click="deleteByIds">Delete</el-button>
+        <el-button type="primary" plain @click="dialogVisible = true">New Brand</el-button> <!--新增其实就是让一个窗口可视-->
     </el-row>
 
-    <!--添加数据对话框表单（点击新增时出现的）-->
-    <!--表单中的各数据都绑定了brand模型-->
     <el-dialog
-            title="编辑品牌"
+            title="Edit Brand"
             :visible.sync="dialogVisible"
-            width="30%"
-    >
-
-        <el-form ref="form" :model="brand" label-width="80px">
-            <el-form-item label="品牌名称">
+            width="30%">
+        <el-form ref="form" :model="brand" label-width="160px">
+            <el-form-item label="Brand Name">
                 <el-input v-model="brand.brandName"></el-input>
             </el-form-item>
 
-            <el-form-item label="企业名称">
+            <el-form-item label="Company Name">
                 <el-input v-model="brand.companyName"></el-input>
             </el-form-item>
 
-            <el-form-item label="排序">
+            <el-form-item label="Ordered">
                 <el-input v-model="brand.ordered"></el-input>
             </el-form-item>
 
-            <el-form-item label="备注">
+            <el-form-item label="Note">
                 <el-input type="textarea" v-model="brand.description"></el-input>
             </el-form-item>
 
-            <el-form-item label="状态">
+            <el-form-item label="Status">
                 <el-switch v-model="brand.status"
                            active-value="1"
                            inactive-value="0"
                 ></el-switch>
             </el-form-item>
 
-
-            <!--“新增”表单的提交按钮绑定了addBrand方法-->
-            <!--取消按钮绑定了使表单不可见的方法-->
             <el-form-item>
-                <el-button type="primary" @click="addBrand">提交</el-button>
-                <el-button @click="dialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="addBrand">Submit</el-button>
+                <el-button @click="dialogVisible = false">Cancel</el-button>
             </el-form-item>
         </el-form>
 
     </el-dialog>
 
-    <el-dialog title="编辑信息" :visible.sync="editDialogVisible" width="30%">
-        <template slot-scope="scope">
-            <el-form ref="form" :model="brandEdition" label-width="120px">
-                <el-form-item label="品牌名称">
-                    <el-input v-model="brandEdition.brandName"></el-input>
-                </el-form-item>
-                <el-form-item label="企业名称">
-                    <el-input v-model="brandEdition.companyName"></el-input>
-                </el-form-item>
-                <el-form-item label="排序">
-                    <el-input v-model="brandEdition.ordered"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <el-input type="textarea" v-model="brandEdition.description"></el-input>
-                </el-form-item>
-                <el-form-item label="状态">
-                    <el-switch v-model="brandEdition.status" :active-value="1" :inactive-value="0"></el-switch>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button type="primary" @click="confirmEdit" >确定修改</el-button>
-                    <el-button @click="cancelEdit">取消</el-button>
-                </el-form-item>
-            </el-form>
-        </template>
-    </el-dialog>
-
-
-    <!--数据展示表格-->
     <template>
         <el-table
                 v-loading="loading"
@@ -145,36 +99,36 @@
 
             <el-table-column
                     prop="brandName"
-                    label="品牌名称"
+                    label="Brand Name"
                     align="center"
             >
             </el-table-column>
             <el-table-column
                     prop="companyName"
-                    label="企业名称"
+                    label="Company Name"
                     align="center"
             >
             </el-table-column>
             <el-table-column
                     prop="ordered"
                     align="center"
-                    label="排序">
+                    label="Order">
             </el-table-column>
             <el-table-column
                     prop="statusStr"
                     align="center"
-                    label="当前状态">
+                    label="Current Status">
             </el-table-column>
 
             <el-table-column
                     align="center"
-                    label="操作">
+                    label="Action">
 
                 <!--使用scope可以获得表格中的值-->
                 <template slot-scope="scope">
                     <el-row>
-                        <el-button type="primary" @click="startEdit(scope.row)">修改</el-button>
-                        <el-button type="danger" @click="deleteById(scope.row)">删除</el-button>
+                        <el-button type="primary" @click="startEdit(scope.row)">Edit</el-button>
+                        <el-button type="danger" @click="deleteById(scope.row)">Delete</el-button>
                     </el-row>
                 </template>
 
@@ -183,7 +137,6 @@
         </el-table>
     </template>
 
-    <!--分页工具条-->
     <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -222,133 +175,33 @@
                 )
             },
 
-            //弹出是否修改的窗口
-            startEdit(row) {
-                // 获取该行已经有的数据，以供填入修改框
-
-                this.brandEdition = JSON.parse(JSON.stringify(row));
-                // 弹出修改框
-                this.editDialogVisible = true;
-            },
-
-            //确认修改
-            confirmEdit() {
-
-                axios({
-                    method: "post",
-                    url: "http://localhost:8080/brand-case/brand/update",
-                    data: this.brandEdition
-                }).then(resp =>  {
-                    if (resp.data === "success") {
-                        this.editDialogVisible = false
-                        this.selectAll()
-                        this.$message({
-                            message: '恭喜你，修改成功~~~',
-                            type: 'success'
-                        });
-                    }
-                })
-            },
-
-            //取消修改
-            cancelEdit() {
-                this.editDialogVisible = false
-                this.selectAll()
-            },
-
-            //删除单行数据
-            deleteById(row) {
-                //get data from row
-                this.brand.id = row.id
-                //pop up confirm dialog
-                this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
-                    confirmButtonText: '确认',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    axios({
-                        method: "get",
-                        url: "http://localhost:8080/brand-case/brand/deleteById?id=" + this.brand.id
-                    }).then(resp => {
-                        if (resp.data === "success") {
-                            //remove OK
-                            //reload page, but if we reload the page, the success msg has no time display
-                            // location.reload();
-                            this.selectAll();
-                            //pop up OK msg
-                            this.$message({
-                                message: '删除成功！',
-                                type: 'success'
-                            });
-                        }
-                    })
-                }).catch(() => {
-                    //when cancel clicked
-                    this.$message({
-                        type: 'info',
-                        message: '取消删除'
-                    });
-                })
-            },
-
-            tableRowClassName({row, rowIndex}){
-                if (rowIndex === 1) {
-                    return 'warning-row';
-                } else if (rowIndex === 3) {
-                    return 'success-row';
-                }
-                return '';
-            },
-
-            // 复选框选中后执行的方法
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-
                 console.log(this.multipleSelection)
             },
 
-            // 查询方法
             onSubmit() {
                 this.selectAll();
             },
 
-
-            // 添加数据
+            // ADD RECORD
             addBrand() {
-                /*发送ajax异步请求，添加数据*/
+                // SEND AJAX REQUEST
                 var _this = this;
-
-                // 发送ajax请求，添加数据
                 axios({
                     method:"post",
-                    /*把brand发给Addservlet*/
-                    url:"http://localhost:8080/brand-case/brand/add",
+                    url:"http://localhost:8080/JavaWebDemo_war_exploded/addServlet",
                     data:_this.brand
                 }).then(function (resp) {
-                    if(resp.data == "success"){
-                        //添加成功
-
-                        //关闭窗口
+                    if(resp.data == "added"){
                         _this.dialogVisible = false;
-
-                        // 重新查询数据
                         _this.selectAll();
-                        // 弹出消息提示
                         _this.$message({
-                            message: '恭喜你，添加成功',
+                            message: 'Brand Added',
                             type: 'success'
                         });
-
                     }
                 })
-            },
-
-            //分页相关（在浏览器上点击不同页码或每页多少条后，会重新设置data中的pageSize和currentPage,并重新调用selectAll）
-            handleSizeChange(val) {
-                //console.log(`每页 ${val} 条`);
-                // 重新设置每页显示的条数
-                this.pageSize = val;
-                this.selectAll();
             },
 
             handleCurrentChange(val) {
@@ -358,79 +211,16 @@
                 this.selectAll();
             },
 
-            // 批量删除
-            deleteByIds() {
-
-                // 弹出确认提示框
-
-                this.$confirm('此操作将删除该数据, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    //用户点击确认按钮
-
-                    //1. 创建id数组 [1,2,3], 从 this.multipleSelection 获取即可
-                    for (let i = 0; i < this.multipleSelection.length; i++) {
-                        let selectionElement = this.multipleSelection[i];
-                        this.selectedIds[i] = selectionElement.id;
-
-                    }
-
-                    //2. 发送AJAX请求
-                    var _this = this;
-
-                    // 发送ajax请求，添加数据
-                    axios({
-                        method: "post",
-                        url: "http://localhost:8080/brand-case/brand/deleteByIds",
-                        data: _this.selectedIds
-                    }).then(function (resp) {
-                        if (resp.data == "success") {
-                            //删除成功
-
-                            // 重新查询数据
-                            _this.selectAll();
-                            // 弹出消息提示
-                            _this.$message({
-                                message: '恭喜你，删除成功',
-                                type: 'success'
-                            });
-
-                        }
-                    })
-                }).catch(() => {
-                    //用户点击取消按钮
-
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
-
-
-            }
-
-
         },
         data() {
             return {
-                //每页显示的条数
                 pageSize: 5,
-                //总记录数
                 totalCount: 100,
-                //被选中的id数组(存起来，例如可以遍历复选框数组放到这个数组里然后实现批量删除)
                 selectedIds: [],
-                // 当前页码
                 currentPage: 1,
 
-                // 添加数据对话框是否展示的标记(一开始没点新增时是false)
                 dialogVisible: false,
 
-                //修改的窗口
-                editDialogVisible: false,
-
-                // 品牌模型数据
                 brand: {
                     status: '',
                     brandName: '',
@@ -439,18 +229,7 @@
                     ordered: "",
                     description: ""
                 },
-                //供修改的模型数据
-                brandEdition:{
-                    id: '',
-                    brandName: '',
-                    companyName: '',
-                    ordered: '',
-                    description: '',
-                    status: ''
-                },
-                // 复选框选中数据集合
                 multipleSelection: [],
-                // 表格数据
                 tableData: [{
                     brandName: '华为',
                     companyName: '华为科技有限公司',

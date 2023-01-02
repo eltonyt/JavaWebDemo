@@ -20,4 +20,13 @@ public class BrandServiceImpl implements BrandService {
         sqlSession.close();
         return brands;
     }
+
+    @Override
+    public void addBrand(Brand brand) {
+        SqlSession sqlSession = factory.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        brandMapper.addBrand(brand);
+        sqlSession.commit();
+        sqlSession.close();
+    }
 }
