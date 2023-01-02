@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet("/addServlet")
+//@WebServlet("/addServlet")
 public class AddServlet extends HttpServlet {
 
     private BrandService brandService = new BrandServiceImpl();

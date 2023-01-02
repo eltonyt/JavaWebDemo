@@ -30,4 +30,12 @@ public class BrandServlet extends BaseServlet{
         brandService.addBrand(brand);
         resp.getWriter().write("added");
     }
+
+    public void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader br = req.getReader();
+        String param = br.readLine();
+        Brand brand = JSON.parseObject(param, Brand.class);
+        brandService.updateBrand(brand);
+        resp.getWriter().write("updated");
+    }
 }

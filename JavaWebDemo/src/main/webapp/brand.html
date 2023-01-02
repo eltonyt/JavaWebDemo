@@ -38,11 +38,11 @@
 
     <el-row>
         <el-button type="danger" plain @click="deleteByIds">Delete</el-button>
-        <el-button type="primary" plain @click="dialogVisible = true">New Brand</el-button> <!--新增其实就是让一个窗口可视-->
+        <el-button type="primary" plain @click="dialogVisible = true">New Brand</el-button>
     </el-row>
 
     <el-dialog
-            title="Edit Brand"
+            title="Add Brand"
             :visible.sync="dialogVisible"
             width="30%">
         <el-form ref="form" :model="brand" label-width="160px">
@@ -76,6 +76,34 @@
         </el-form>
 
     </el-dialog>
+
+    <el-dialog title="Edit Brand" :visible.sync="editDialogVisible" width="30%">
+        <template slot-scope="scope">
+            <el-form ref="form" :model="brandEdition" label-width="160px">
+                <el-form-item label="Brand Name">
+                    <el-input v-model="brandEdition.brandName"></el-input>
+                </el-form-item>
+                <el-form-item label="Company Name">
+                    <el-input v-model="brandEdition.companyName"></el-input>
+                </el-form-item>
+                <el-form-item label="Order">
+                    <el-input v-model="brandEdition.ordered"></el-input>
+                </el-form-item>
+                <el-form-item label="Notes">
+                    <el-input type="textarea" v-model="brandEdition.description"></el-input>
+                </el-form-item>
+                <el-form-item label="Current Status">
+                    <el-switch v-model="brandEdition.status" :active-value="1" :inactive-value="0"></el-switch>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="confirmEdit" >Confirm</el-button>
+                    <el-button @click="cancelEdit">Cancel</el-button>
+                </el-form-item>
+            </el-form>
+        </template>
+    </el-dialog>
+
 
     <template>
         <el-table
@@ -174,6 +202,27 @@
                     }
                 )
             },
+            cancelEdit() {
+                this.editDialogVisible = false;
+            },
+            confirmEdit() {
+                // SEND AJAX REQUEST
+                var _this = this;
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/update",
+                    data:_this.brandEdition
+                }).then(function (resp) {
+                    if(resp.data == "updated"){
+                        _this.editDialogVisible = false;
+                        _this.selectAll();
+                        _this.$message({
+                            message: 'Brand Updated',
+                            type: 'success'
+                        });
+                    }
+                })
+            },
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -203,7 +252,10 @@
                     }
                 })
             },
-
+            startEdit(row) {
+                this.brandEdition = JSON.parse(JSON.stringify(row));
+                this.editDialogVisible = true;
+            },
             handleCurrentChange(val) {
                 //console.log(`当前页: ${val}`);
                 // 重新设置当前页码
@@ -220,7 +272,7 @@
                 currentPage: 1,
 
                 dialogVisible: false,
-
+                editDialogVisible: false,
                 brand: {
                     status: '',
                     brandName: '',
@@ -228,6 +280,14 @@
                     id: "",
                     ordered: "",
                     description: ""
+                },
+                brandEdition:{
+                    id: '',
+                    brandName: '',
+                    companyName: '',
+                    ordered: '',
+                    description: '',
+                    status: ''
                 },
                 multipleSelection: [],
                 tableData: [{

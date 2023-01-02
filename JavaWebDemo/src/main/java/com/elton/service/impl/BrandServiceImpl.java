@@ -29,4 +29,12 @@ public class BrandServiceImpl implements BrandService {
         sqlSession.commit();
         sqlSession.close();
     }
+
+    public void updateBrand(Brand brand) {
+        SqlSession sqlSession = factory.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        brandMapper.updateBrand(brand);
+        sqlSession.commit();
+        sqlSession.close();
+    }
 }
