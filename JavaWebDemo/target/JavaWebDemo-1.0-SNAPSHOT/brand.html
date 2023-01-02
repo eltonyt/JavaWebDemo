@@ -200,33 +200,26 @@
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
 <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
-
 <script src="js/axios-0.18.0.js"></script>
 
 <script>
     new Vue({
-        el: "#app",   //id=app的div中内容都会被该Vue对象影响
+        el: "#app",
+        // LOAD ALL DATA WHEN INITIALIZATION IS FINISHED
         mounted() {
-            /*页面加载完成后，发送异步请求，获取数据*/
             this.selectAll();
         },
         methods: {
-
-            /*分页并按条件查询全部*/
             selectAll() {
-                /*发送异步请求*/
+                var _this = this;
                 axios({
-                    method: "post",
-                    /*浏览器给服务器的是：当前页码和每页大小*/
-                    url: "http://localhost:8080/brand-case/brand/selectByPageAndCondition?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
-                    data: this.brand
-                }).then(resp=>{  //用这种箭头形式就不用先写var _this=this了
-                    //设置表格数据
-                    this.tableData = resp.data.rows; // {rows:[],totalCount:100}
-                    //设置总记录数
-                    this.totalCount = resp.data.totalCount;
-                })
-
+                    method:"get",
+                    url:"http://localhost:8080/JavaWebDemo_war_exploded/selectAllServlet"
+                }).then(
+                    function (resp){
+                        _this.tableData = resp.data;
+                    }
+                )
             },
 
             //弹出是否修改的窗口
