@@ -167,7 +167,7 @@
                 var _this = this;
                 axios({
                     method:"get",
-                    url:"http://localhost:8080/JavaWebDemo_war_exploded/selectAllServlet"
+                    url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/selectAll"
                 }).then(
                     function (resp){
                         _this.tableData = resp.data;
@@ -190,7 +190,7 @@
                 var _this = this;
                 axios({
                     method:"post",
-                    url:"http://localhost:8080/JavaWebDemo_war_exploded/addServlet",
+                    url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/add",
                     data:_this.brand
                 }).then(function (resp) {
                     if(resp.data == "added"){
