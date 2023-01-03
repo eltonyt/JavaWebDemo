@@ -16,5 +16,7 @@ public interface BrandMapper {
     void updateBrand(Brand brand);
 
     @Delete("delete from tb_brand where id = #{brandid}")
-    void deleteById(int brandid);
+    void deleteById(int brandId);
+
+    void deleteByIds(@Param("ids") int[] brandIds);
 }

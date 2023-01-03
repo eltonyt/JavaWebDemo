@@ -223,7 +223,37 @@
                     }
                 })
             },
-
+            deleteByIds(){
+                for (let i = 0; i < this.multipleSelection.length; i++) {
+                    let selectionElement = this.multipleSelection[i];
+                    this.selectedIds[i] = selectionElement.id;
+                }
+                var _this = this;
+                this.$confirm("Are you sure you want to remove selected records?", "Warning", {
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    type: "warning"
+                }).then(() => {
+                    axios({
+                        method:"delete",
+                        url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/deleteByIds",
+                        data:_this.selectedIds
+                    }).then(function (resp) {
+                        if(resp.data == "deleted"){
+                            _this.selectAll();
+                            _this.$message({
+                                message: 'Brands Deleted',
+                                type: 'success'
+                            });
+                        }
+                    })
+                }).catch(() => {
+                    _this.$message({
+                        message: 'Deletion Cancelled',
+                        type: 'info'
+                    });
+                })
+            },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
                 console.log(this.multipleSelection)
@@ -297,7 +327,6 @@
             return {
                 pageSize: 5,
                 totalCount: 100,
-                selectedIds: [],
                 currentPage: 1,
 
                 dialogVisible: false,
@@ -320,6 +349,7 @@
                 },
                 brandDeleteId: -1,
                 multipleSelection: [],
+                selectedIds:[],
                 tableData: [{
                     brandName: '华为',
                     companyName: '华为科技有限公司',

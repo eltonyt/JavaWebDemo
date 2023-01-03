@@ -12,4 +12,6 @@ public interface BrandService {
     void updateBrand(Brand brand);
 
     void deleteById(int id);
+
+    void deleteByIds(int[] ids);
 }

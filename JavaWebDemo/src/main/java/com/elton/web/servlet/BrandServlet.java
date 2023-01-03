@@ -46,4 +46,12 @@ public class BrandServlet extends BaseServlet{
         brandService.deleteById(id);
         resp.getWriter().write("deleted");
     }
+
+    public void deleteByIds(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader br = req.getReader();
+        String param = br.readLine();
+        int[] ids = JSON.parseObject(param, int[].class);
+        brandService.deleteByIds(ids);
+        resp.getWriter().write("deleted");
+    }
 }
