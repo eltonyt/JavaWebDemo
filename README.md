@@ -13,3 +13,6 @@ This project helps created a webpage which users can simply add, update, delete,
 2. Vue.js
 3. Axios (AJAX Structure)
 4. Element UI (UI Developed by Eleme from China)
+
+### Screenshot of the webpage
+![alt text](https://github.com/eltonyt/JavaWebDemo/blob/main/JavaWebDemo/src/main/resources/JavaWebDemo.png)
