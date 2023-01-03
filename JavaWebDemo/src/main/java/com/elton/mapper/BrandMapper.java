@@ -19,4 +19,11 @@ public interface BrandMapper {
     void deleteById(int brandId);
 
     void deleteByIds(@Param("ids") int[] brandIds);
+
+    @Select("select * from tb_brand limit #{beginIndex} , #{size}")
+    @ResultMap("brandResultMap")
+    List<Brand> selectByPage(@Param("beginIndex") int beginIndex, @Param("size") int size);
+
+    @Select("select count(*) from tb_brand")
+    int selectTotalCount();
 }

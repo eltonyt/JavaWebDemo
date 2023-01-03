@@ -1,6 +1,7 @@
 package com.elton.web.servlet;
 import com.alibaba.fastjson.JSON;
 import com.elton.pojo.Brand;
+import com.elton.pojo.PageBean;
 import com.elton.service.BrandService;
 import com.elton.service.impl.BrandServiceImpl;
 
@@ -54,4 +55,13 @@ public class BrandServlet extends BaseServlet{
         brandService.deleteByIds(ids);
         resp.getWriter().write("deleted");
     }
+
+    public void selectByPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int pageIndex = Integer.parseInt(req.getParameter("currentPage"));
+        int pageSize = Integer.parseInt(req.getParameter("pageSize"));
+        PageBean<Brand> brands = brandService.selectByPage(pageIndex, pageSize);
+        String jsonString = JSON.toJSONString(brands);
+        resp.getWriter().write(jsonString);
+    }
+
 }

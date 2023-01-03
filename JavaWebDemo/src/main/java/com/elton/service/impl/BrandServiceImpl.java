@@ -2,6 +2,7 @@ package com.elton.service.impl;
 
 import com.elton.mapper.BrandMapper;
 import com.elton.pojo.Brand;
+import com.elton.pojo.PageBean;
 import com.elton.service.BrandService;
 import com.elton.util.SqlSessionFactoryUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -52,5 +53,25 @@ public class BrandServiceImpl implements BrandService {
         brandMapper.deleteByIds(ids);
         sqlSession.commit();
         sqlSession.close();
+    }
+
+    @Override
+    public PageBean<Brand> selectByPage(int currentPage, int size) {
+        int beginIndex = (currentPage - 1) * size;
+        SqlSession sqlSession = factory.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        List<Brand> brands = brandMapper.selectByPage(beginIndex, size);
+        PageBean<Brand> pageBean = new PageBean<>();
+        pageBean.setRows(brands);
+        pageBean.setTotalCount(selectTotalCount());
+        sqlSession.close();
+        return pageBean;
+    }
+
+    @Override
+    public int selectTotalCount() {
+        SqlSession sqlSession = factory.openSession();
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        return brandMapper.selectTotalCount();
     }
 }
