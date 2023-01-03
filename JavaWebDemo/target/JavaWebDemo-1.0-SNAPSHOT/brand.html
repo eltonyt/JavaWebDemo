@@ -12,7 +12,6 @@
             background: #f0f9eb;
         }
     </style>
-
 </head>
 <body>
 <div id="app">
@@ -32,7 +31,7 @@
             <el-input v-model="brand.brandName" placeholder="Brand Name"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit">Submit</el-button>
+            <el-button type="primary" @click="onSubmit">Search</el-button>
         </el-form-item>
     </el-form>
 
@@ -107,9 +106,12 @@
 
     <template>
         <el-table
+                v-loading="loading"
+                element-loading-text="拼命加载中——————"
+                element-loading-spinner="el-icon-loading"
+                element-loading-background="rgba(0, 0, 0, 0.8)"
                 :data="tableData"
                 style="width: 100%"
-                :row-class-name="tableRowClassName"
                 @selection-change="handleSelectionChange"
         >
             <el-table-column
@@ -139,7 +141,7 @@
                     label="Order">
             </el-table-column>
             <el-table-column
-                    prop="statusStr"
+                    prop="status"
                     align="center"
                     label="Current Status">
             </el-table-column>
@@ -187,46 +189,31 @@
             this.selectAll();
         },
         methods: {
-            // selectAll() {
-            //     var _this = this;
-            //     axios({
-            //         method:"get",
-            //         url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/selectAll"
-            //     }).then(
-            //         function (resp){
-            //             _this.tableData = resp.data;
-            //         }
-            //     )
-            // },
-
             selectAll() {
-                var _this = this;
                 axios({
-                    method:"get",
-                    url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/selectByPage?currentPage=" + _this.currentPage + "&pageSize=" + _this.pageSize
-                }).then(
-                    function (resp){
-                        // _this.tableData = resp.data;    // {rows:[], totalCount:111}
-                        _this.tableData = resp.data.rows;
-                        _this.totalCount = resp.data.totalCount;
-                    }
-                )
+                    method:"post",
+                    url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/selectByPageAndCondition?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
+                    data:this.brand
+                }).then(resp => {
+                    // _this.tableData = resp.data;    // {rows:[], totalCount:111}
+                    this.tableData = resp.data.rows;
+                    this.totalCount = resp.data.totalCount;
+                })
             },
             cancelEdit() {
                 this.editDialogVisible = false;
             },
             confirmEdit() {
                 // SEND AJAX REQUEST
-                var _this = this;
                 axios({
                     method:"post",
                     url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/update",
-                    data:_this.brandEdition
-                }).then(function (resp) {
+                    data:this.brandEdition
+                }).then(resp => {
                     if(resp.data == "updated"){
-                        _this.editDialogVisible = false;
-                        _this.selectAll();
-                        _this.$message({
+                        this.editDialogVisible = false;
+                        this.selectAll();
+                        this.$message({
                             message: 'Brand Updated',
                             type: 'success'
                         });
@@ -238,7 +225,6 @@
                     let selectionElement = this.multipleSelection[i];
                     this.selectedIds[i] = selectionElement.id;
                 }
-                var _this = this;
                 this.$confirm("Are you sure you want to remove selected records?", "Warning", {
                     confirmButtonText: "Yes",
                     cancelButtonText: "No",
@@ -247,18 +233,18 @@
                     axios({
                         method:"delete",
                         url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/deleteByIds",
-                        data:_this.selectedIds
-                    }).then(function (resp) {
+                        data:this.selectedIds
+                    }).then( resp => {
                         if(resp.data == "deleted"){
-                            _this.selectAll();
-                            _this.$message({
+                            this.selectAll();
+                            this.$message({
                                 message: 'Brands Deleted',
                                 type: 'success'
                             });
                         }
                     })
                 }).catch(() => {
-                    _this.$message({
+                    this.$message({
                         message: 'Deletion Cancelled',
                         type: 'info'
                     });
@@ -276,16 +262,15 @@
             // ADD RECORD
             addBrand() {
                 // SEND AJAX REQUEST
-                var _this = this;
                 axios({
                     method:"post",
                     url:"http://localhost:8080/JavaWebDemo_war_exploded/brand/add",
-                    data:_this.brand
-                }).then(function (resp) {
+                    data:this.brand
+                }).then( resp => {
                     if(resp.data == "added"){
-                        _this.dialogVisible = false;
-                        _this.selectAll();
-                        _this.$message({
+                        this.dialogVisible = false;
+                        this.selectAll();
+                        this.$message({
                             message: 'Brand Added',
                             type: 'success'
                         });

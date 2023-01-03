@@ -19,4 +19,8 @@ public interface BrandService {
     PageBean<Brand> selectByPage(int currentPage, int size);
 
     int selectTotalCount();
+
+    PageBean<Brand> selectByPageAndCondition(int currentPage, int size, Brand brand);
+
+    int selectTotalCountAndCondition(Brand brand);
 }

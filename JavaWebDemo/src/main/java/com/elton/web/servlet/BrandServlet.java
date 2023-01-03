@@ -64,4 +64,15 @@ public class BrandServlet extends BaseServlet{
         resp.getWriter().write(jsonString);
     }
 
+    public void selectByPageAndCondition(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int pageIndex = Integer.parseInt(req.getParameter("currentPage"));
+        int pageSize = Integer.parseInt(req.getParameter("pageSize"));
+        BufferedReader br = req.getReader();
+        String param = br.readLine();
+        Brand brand = JSON.parseObject(param, Brand.class);
+        PageBean<Brand> brands = brandService.selectByPageAndCondition(pageIndex, pageSize, brand);
+        String jsonString = JSON.toJSONString(brands);
+        resp.getWriter().write(jsonString);
+    }
+
 }
